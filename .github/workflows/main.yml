@@ -21,3 +21,15 @@ jobs:
         template: ./GithubAction.bicep
         parameters: 'storagePrefix=chrisaction storageSKU=Standard_LRS'
         failOnStdErr: false
+        
+    - name: Retrieve deployment outputs
+      run: |
+        az deployment group show \
+          --resource-group ${{ secrets.AZURE_RG }} \
+          --name <DEPLOYMENT_NAME> \
+          --query properties.outputs > outputs.json
+
+    - name: Display deployment outputs
+      run: |
+        echo "Deployment Outputs:"
+        cat outputs.json
