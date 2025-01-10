@@ -6,7 +6,7 @@ jobs:
     steps:
 
     - name: Checkout code
-      uses: actions/checkout@main
+      uses: actions/checkout@v3
 
     - name: Log into Azure
       uses: azure/login@v1
@@ -21,12 +21,21 @@ jobs:
         template: ./GithubAction.bicep
         parameters: 'storagePrefix=chrisaction storageSKU=Standard_LRS'
         failOnStdErr: false
-        
+
+    - name: Get the most recent deployment name
+      id: get-deployment-name
+      run: |
+        DEPLOYMENT_NAME=$(az deployment group list \
+          --resource-group ${{ secrets.AZURE_RG }} \
+          --query "[0].name" -o tsv)
+        echo "Deployment Name: $DEPLOYMENT_NAME"
+        echo "DEPLOYMENT_NAME=$DEPLOYMENT_NAME" >> $GITHUB_ENV
+
     - name: Retrieve deployment outputs
       run: |
         az deployment group show \
           --resource-group ${{ secrets.AZURE_RG }} \
-          --name <DEPLOYMENT_NAME> \
+          --name ${{ env.DEPLOYMENT_NAME }} \
           --query properties.outputs > outputs.json
 
     - name: Display deployment outputs
