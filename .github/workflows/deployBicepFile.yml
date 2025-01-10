@@ -6,7 +6,7 @@ jobs:
     steps:
 
     - name: Checkout code
-      uses: actions/checkout@deployBicepFile
+      uses: actions/checkout@main
 
     - name: Log into Azure
       uses: azure/login@v1
