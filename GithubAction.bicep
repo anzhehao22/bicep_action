@@ -31,3 +31,4 @@ resource stg 'Microsoft.Storage/storageAccounts@2023-04-01' = {
 }
 
 output storageEndpoint object = stg.properties.primaryEndpoints
+output createdTIme string = stg.properties.creationTime
