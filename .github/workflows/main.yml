@@ -42,3 +42,9 @@ jobs:
       run: |
         echo "Deployment Outputs:"
         cat outputs.json
+        
+    - name: Save output to artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: deployment-output
+        path: outputs.json
